@@ -38,6 +38,11 @@ public:
         }
     }
     
+    int getTotalElements() {
+        std::cout << "Number of elements in list is: " << last_index << std::endl;
+        return last_index;
+    }
+    
     Dnode *getFirstNode() {
         /*
          Returns the address to first node
@@ -52,6 +57,8 @@ public:
          The list is 0 indexed
          */
         
+        int g;
+        
         if(is_listEmpty() || index>=last_index) {
             std::cout << "CANNOT GET BECAUSE EMPTY" << std::endl;
             return -1;
@@ -60,14 +67,14 @@ public:
             Dnode *ptr = head->next;
             for(int i{0}; i<last_index; i++) {
                 if(i == index) {
-                    std::cout << ptr->val << std::endl;
+                    g = ptr->val;
                 }
                 else {
                     ptr = ptr->next;
                 }
             }
         }
-        return 0;
+        return g;
     }
     
     void addatHead(int val) {
@@ -114,12 +121,14 @@ public:
         
         if(index == last_index+1) {
             addatTail(val);
+            return;
         }
         else if(index > last_index) {
             std::cout << "NOT ADDED" << std::endl;
         }
         else if(index==0) {
             addatHead(val);
+            return;
         }
         else {
             Dnode *ptr = head->next;
@@ -148,6 +157,21 @@ public:
         if(index >= last_index) {
             std::cout << "NOTHING TO DELETE" << std::endl;
         }
+        else if(index == 0) {
+            Dnode *start = head->next;
+            if(start->next == NULL) {
+                head->next = NULL;
+                delete start;
+                last_index = NULL;
+            }
+            else {
+                Dnode *del_node = start;
+                head->next = start->next;
+                head->next->prev = NULL;
+                delete del_node;
+                last_index -= 1;
+            }
+        }
         else {
             Dnode *ptr = head->next;
             for(int i{0}; i<=index; i++) {
@@ -169,6 +193,11 @@ public:
          Iterative reversal of the list
          */
         
+        if(getTotalElements() == 0) {
+            std::cout << "No elements in list to reverse" << std::endl;
+            return;
+        }
+        
         Dnode *curr = head->next;
         Dnode *prev = NULL;
         Dnode *next;
@@ -185,6 +214,11 @@ public:
         /*
          Recursive reversal of the list
          */
+        
+        if(getTotalElements() == 0) {
+            std::cout << "No elements in list to reverse" << std::endl;
+            return;
+        }
         
         if(curr->next == NULL) {
             head->next = curr;
